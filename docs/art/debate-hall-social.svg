@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+  <!-- Copyright (C) 2026 Becky Northaven and the Debate Hall contributors -->
+  <!-- Debate Hall's repository art: a hall seen from the gallery. A bench under a warm lamp, an open ledger, and two
+       lecterns facing each other, each shared by a person and an AI. Drawn in the hall's own colors. -->
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2e2016"/>
+      <stop offset="1" stop-color="#1a120c"/>
+    </linearGradient>
+    <radialGradient id="lamp" cx="640" cy="250" r="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f6d98e" stop-opacity=".55"/>
+      <stop offset=".45" stop-color="#d8a54a" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#d8a54a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a3322"/>
+      <stop offset="1" stop-color="#22170f"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b4a2f"/>
+      <stop offset="1" stop-color="#3d2b1d"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbf6ea"/>
+      <stop offset="1" stop-color="#e6d6b4"/>
+    </linearGradient>
+    <radialGradient id="halo">
+      <stop offset="0" stop-color="#9cbde6" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#9cbde6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="warm">
+      <stop offset="0" stop-color="#f6d98e" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#f6d98e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9cbde6"/>
+      <stop offset="1" stop-color="#5f86b8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- the walls and the arched windows -->
+  <rect width="1280" height="640" fill="url(#wall)"/>
+  <g fill="#3d2b1d" stroke="#b08a3e" stroke-opacity=".35" stroke-width="2">
+    <path d="M150 360 V170 a70 70 0 0 1 140 0 V360 Z"/>
+    <path d="M990 360 V170 a70 70 0 0 1 140 0 V360 Z"/>
+  </g>
+  <g fill="#9cbde6" fill-opacity=".10">
+    <path d="M165 350 V172 a55 55 0 0 1 110 0 V350 Z"/>
+    <path d="M1005 350 V172 a55 55 0 0 1 110 0 V350 Z"/>
+  </g>
+  <g stroke="#b08a3e" stroke-opacity=".3" stroke-width="2">
+    <line x1="220" y1="118" x2="220" y2="350"/><line x1="165" y1="240" x2="275" y2="240"/>
+    <line x1="1060" y1="118" x2="1060" y2="350"/><line x1="1005" y1="240" x2="1115" y2="240"/>
+  </g>
+  <!-- wainscot and brass rule -->
+  <rect y="360" width="1280" height="8" fill="#b08a3e" fill-opacity=".8"/>
+  <rect y="368" width="1280" height="272" fill="url(#floor)"/>
+  <g stroke="#2a1d13" stroke-width="2" opacity=".6">
+    <line x1="0" y1="430" x2="1280" y2="430"/><line x1="0" y1="500" x2="1280" y2="500"/><line x1="0" y1="575" x2="1280" y2="575"/>
+  </g>
+
+  <!-- the lamp's light -->
+  <rect width="1280" height="640" fill="url(#lamp)"/>
+  <line x1="640" y1="0" x2="640" y2="92" stroke="#b08a3e" stroke-width="3"/>
+  <path d="M600 92 h80 l-14 30 h-52 Z" fill="#b08a3e"/>
+  <ellipse cx="640" cy="126" rx="22" ry="7" fill="#fff3c4"/>
+
+  <!-- the judge's bench, the open ledger, the gavel -->
+  <path d="M470 300 h340 v120 h-340 Z" fill="url(#wood)" stroke="#b08a3e" stroke-width="3"/>
+  <rect x="460" y="288" width="360" height="16" rx="3" fill="#7a5a3a" stroke="#b08a3e" stroke-width="2"/>
+  <g transform="translate(640 286)">
+    <path d="M-92 0 Q-46 -14 0 -4 Q46 -14 92 0 L92 -6 Q46 -22 0 -12 Q-46 -22 -92 -6 Z" fill="#d9c7a1"/>
+    <path d="M-88 -4 Q-44 -18 0 -8 V-60 Q-44 -70 -88 -56 Z" fill="url(#paper)" stroke="#c4b08f"/>
+    <path d="M88 -4 Q44 -18 0 -8 V-60 Q44 -70 88 -56 Z" fill="url(#paper)" stroke="#c4b08f"/>
+    <g stroke="#54493a" stroke-width="2" stroke-linecap="round" opacity=".75">
+      <line x1="-76" y1="-48" x2="-14" y2="-54"/><line x1="-76" y1="-38" x2="-22" y2="-43"/><line x1="-76" y1="-28" x2="-14" y2="-33"/>
+      <line x1="14" y1="-54" x2="76" y2="-48"/><line x1="14" y1="-44" x2="66" y2="-39"/><line x1="14" y1="-34" x2="76" y2="-29"/>
+    </g>
+    <g fill="#6b1f1f"><circle cx="-80" cy="-49" r="3"/><circle cx="-80" cy="-39" r="3"/><circle cx="-80" cy="-29" r="3"/></g>
+    <path d="M24 -20 l12 -6 l4 8 l-12 6 Z" fill="#6b1f1f"/>
+  </g>
+  <g transform="translate(760 270) rotate(-18)">
+    <rect x="-4" y="-2" width="44" height="8" rx="3" fill="#3d2b1d"/>
+    <rect x="-16" y="-10" width="18" height="24" rx="4" fill="#5a3d26" stroke="#b08a3e" stroke-width="1.5"/>
+  </g>
+  <!-- the scales, small, above the bench -->
+  <g transform="translate(640 196)" stroke="#b08a3e" stroke-width="3" fill="none" stroke-linecap="round">
+    <line x1="0" y1="-30" x2="0" y2="22"/><circle cx="0" cy="-33" r="4" fill="#b08a3e"/>
+    <line x1="-50" y1="-22" x2="50" y2="-22"/>
+    <line x1="-50" y1="-22" x2="-62" y2="4" stroke-width="1.5"/><line x1="-50" y1="-22" x2="-38" y2="4" stroke-width="1.5"/>
+    <line x1="50" y1="-22" x2="38" y2="4" stroke-width="1.5"/><line x1="50" y1="-22" x2="62" y2="4" stroke-width="1.5"/>
+    <path d="M-66 4 h32 a16 9 0 0 1 -32 0 Z" fill="#b08a3e" fill-opacity=".5"/>
+    <path d="M34 4 h32 a16 9 0 0 1 -32 0 Z" fill="#b08a3e" fill-opacity=".5"/>
+    <path d="M-12 22 h24"/>
+  </g>
+
+  <!-- left lectern: a person and an AI, one team -->
+  <g transform="translate(205 470)">
+    <path d="M-80 -60 h160 l-14 120 h-132 Z" fill="url(#wood)" stroke="#b08a3e" stroke-width="3"/>
+    <rect x="-92" y="-72" width="184" height="16" rx="3" fill="#7a5a3a" stroke="#b08a3e" stroke-width="2"/>
+    <circle cx="-40" cy="-118" r="58" fill="url(#warm)"/><circle cx="41" cy="-122" r="62" fill="url(#halo)"/>
+    <!-- the person: long brown hair, a smile -->
+    <path d="M-69 -128 q0 -34 29 -34 q29 0 29 34 q2 26 8 46 q-10 8 -20 2 q-6 -18 -6 -40 h-22 q0 22 -6 40 q-10 6 -20 -2 q6 -20 8 -46 Z"
+          fill="#5b3a22"/>
+    <path d="M-78 -72 q0 -40 38 -40 q38 0 38 40 Z" fill="#2a5530"/>
+    <path d="M-66 -96 q-6 12 -10 24 h12 q2 -12 6 -20 Z M-14 -96 q6 12 10 24 h-12 q-2 -12 -6 -20 Z" fill="#5b3a22"/>
+    <circle cx="-40" cy="-126" r="24" fill="#d8a77a"/>
+    <path d="M-64 -128 q2 -26 24 -26 q24 0 25 24 q-8 -12 -22 -13 q-15 -1 -27 15 Z" fill="#5b3a22"/>
+    <g fill="#2b1d12"><circle cx="-48" cy="-125" r="2.6"/><circle cx="-32" cy="-125" r="2.6"/></g>
+    <g stroke="#2b1d12" stroke-width="1.8" fill="none" stroke-linecap="round">
+      <path d="M-52 -131 q4 -3 8 0"/><path d="M-36 -131 q4 -3 8 0"/>
+      <path d="M-47 -116 q7 6 14 0"/>
+    </g>
+    <g fill="#e88a7a" fill-opacity=".35"><circle cx="-53" cy="-118" r="4"/><circle cx="-27" cy="-118" r="4"/></g>
+    <!-- the AI: a calm lantern-like figure -->
+    <rect x="16" y="-150" width="50" height="44" rx="12" fill="url(#glow)" stroke="#e6eefb" stroke-width="2"/>
+    <circle cx="32" cy="-128" r="5" fill="#1f3a5f"/><circle cx="50" cy="-128" r="5" fill="#1f3a5f"/>
+    <path d="M34 -117 q7 5 14 0" stroke="#1f3a5f" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <line x1="41" y1="-150" x2="41" y2="-162" stroke="#e6eefb" stroke-width="2"/><circle cx="41" cy="-165" r="4" fill="#f6d98e"/>
+    <path d="M10 -72 q0 -34 31 -34 q31 0 31 34 Z" fill="#1f3a5f"/>
+  </g>
+  <!-- right lectern: an AI and a person, the other team -->
+  <g transform="translate(1075 470)">
+    <path d="M-80 -60 h160 l-14 120 h-132 Z" fill="url(#wood)" stroke="#b08a3e" stroke-width="3"/>
+    <rect x="-92" y="-72" width="184" height="16" rx="3" fill="#7a5a3a" stroke="#b08a3e" stroke-width="2"/>
+    <circle cx="-41" cy="-122" r="62" fill="url(#halo)"/><circle cx="40" cy="-118" r="58" fill="url(#warm)"/>
+    <rect x="-66" y="-150" width="50" height="44" rx="12" fill="url(#glow)" stroke="#e6eefb" stroke-width="2"/>
+    <circle cx="-50" cy="-128" r="5" fill="#1f3a5f"/><circle cx="-32" cy="-128" r="5" fill="#1f3a5f"/>
+    <path d="M-48 -117 q7 5 14 0" stroke="#1f3a5f" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <line x1="-41" y1="-150" x2="-41" y2="-162" stroke="#e6eefb" stroke-width="2"/><circle cx="-41" cy="-165" r="4" fill="#f6d98e"/>
+    <path d="M-72 -72 q0 -34 31 -34 q31 0 31 34 Z" fill="#1f3a5f"/>
+    <!-- the person: dark curls, a smile -->
+    <path d="M2 -72 q0 -40 38 -40 q38 0 38 40 Z" fill="#873f12"/>
+    <circle cx="40" cy="-126" r="24" fill="#8a5a3c"/>
+    <g fill="#24170e">
+      <circle cx="22" cy="-140" r="9"/><circle cx="32" cy="-149" r="10"/><circle cx="45" cy="-151" r="10"/>
+      <circle cx="57" cy="-143" r="9"/><circle cx="62" cy="-131" r="7"/><circle cx="18" cy="-129" r="7"/>
+    </g>
+    <g fill="#1a110a"><circle cx="32" cy="-124" r="2.6"/><circle cx="48" cy="-124" r="2.6"/></g>
+    <g stroke="#1a110a" stroke-width="1.8" fill="none" stroke-linecap="round">
+      <path d="M28 -130 q4 -3 8 0"/><path d="M44 -130 q4 -3 8 0"/>
+      <path d="M33 -115 q7 6 14 0"/>
+    </g>
+  </g>
+  <!-- speech: the two sides' threads meet over the floor -->
+  <g fill="none" stroke="#f2e8d4" stroke-opacity=".45" stroke-width="2.5" stroke-dasharray="2 9" stroke-linecap="round">
+    <path d="M290 360 Q460 326 560 360"/>
+    <path d="M990 360 Q820 326 720 360"/>
+  </g>
+
+  <!-- the title -->
+  <!-- the title, cut like an inscription on a building: wide Roman capitals with a carved edge -->
+  <g font-family="'Trajan Pro', 'Cinzel', 'Times New Roman', Georgia, serif" text-anchor="middle" font-size="64"
+     letter-spacing="13">
+    <text x="641" y="505" fill="#120c07" opacity=".85">DEBATE HALL</text>
+    <text x="639" y="501" fill="#fff3d2" opacity=".35">DEBATE HALL</text>
+    <text x="640" y="503" fill="#d9b768">DEBATE HALL</text>
+  </g>
+  <g stroke="#b08a3e" stroke-width="2">
+    <line x1="420" y1="524" x2="860" y2="524"/><line x1="445" y1="530" x2="835" y2="530" stroke-opacity=".5"/>
+  </g>
+  <g font-family="Georgia, 'Book Antiqua', Palatino, serif" text-anchor="middle">
+    <text x="640" y="566" font-size="27" fill="#f1e4c6" font-style="italic">Argue the claim, not the person.</text>
+    <rect x="250" y="584" width="780" height="34" rx="17" fill="#120c07" fill-opacity=".55"/>
+    <text x="640" y="608" font-size="21" fill="#f4ead4" letter-spacing=".5">People and AI, side by side, in good faith · every objection on the record</text>
+  </g>
+</svg>

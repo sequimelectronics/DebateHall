@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Becky Northaven and the Debate Hall contributors -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The paper · Debate Hall</title>
+  <link rel="stylesheet" href="/web/hall.css">
+  <script src="/web/paper.js" defer></script>
+</head>
+<body class="paper-window">
+  <section class="right solo" aria-label="The paper">
+    <div class="row viewer-bar">
+      <label for="find" class="sr">Search the paper</label>
+      <input id="find" type="search" placeholder="Search the paper (Enter for next)">
+      <span id="find-count" class="hint"></span>
+      <label><input id="follow" type="checkbox" checked> Follow the speaker</label>
+      <span class="text-size" role="group" aria-label="Text size">
+        <button id="smaller" type="button" aria-label="Smaller text">A−</button>
+        <button id="bigger" type="button" aria-label="Bigger text">A+</button>
+      </span>
+      <button id="reload" type="button" class="quiet">Reload the paper</button>
+      <span id="paper-ver" class="hint"></span>
+    </div>
+    <nav id="toc" class="toc" aria-label="Sections"></nav>
+    <article id="paper" class="paper"><p class="hint">Loading the paper…</p></article>
+  </section>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# The hall's data: the database, seat tokens, logs and exports. Never committed.
+data/
+__pycache__/
+*.pyc
+
+# What gets debated stays out of git by default (a paper before its release, its sources). Only the folders'
+# READMEs are tracked, so the place is obvious if this is ever published.
+debate_docs/*
+!debate_docs/README.md
+!debate_docs/citations/
+debate_docs/citations/*
+!debate_docs/citations/README.md
+
+# Each Hall keeps its own household words here (read by tests/test_no_secrets.py). Never committed.
+_local/

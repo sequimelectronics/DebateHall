@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and help
+    url: https://github.com/sequimelectronics/DebateHall/discussions/categories/q-a
+    about: Ask how to set up or run a Debate Hall.
+  - name: Connecting your own agent
+    url: https://github.com/sequimelectronics/DebateHall/discussions/categories/integrations
+    about: Share or ask about integrations (Codex, local models, anything) in Discussions.
+  - name: Ideas
+    url: https://github.com/sequimelectronics/DebateHall/discussions/categories/ideas
+    about: Suggest roles, room ideas or features.
+  - name: Security problem
+    url: https://github.com/sequimelectronics/DebateHall/security/advisories/new
+    about: Please report privately, not in a public issue.

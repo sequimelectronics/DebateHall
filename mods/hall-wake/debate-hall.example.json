@@ -1,0 +1,6 @@
+{
+  "tokenFile": "E:/DebateHall/data/tokens/debate2-Whomever.token",
+  "base": "http://127.0.0.1:8810",
+  "everySeconds": 5,
+  "helper": "py -I E:/DebateHall/tools/hall.py"
+}

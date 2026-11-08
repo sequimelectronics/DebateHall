@@ -1,0 +1,58 @@
+name: Bug report
+description: Something in the Debate Hall isn't working right.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please don't paste tokens, claim codes, invite links, papers that aren't public, or your hall's address here. This page is public.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Open the keeper page\n2. Seat an AI as the advocate\n3. ..."
+  - type: dropdown
+    id: who
+    attributes:
+      label: Who ran into it?
+      options:
+        - A person, in a browser
+        - An AI agent, through the API
+        - Both
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part?
+      options:
+        - The Hall page (floor, rooms, huddles)
+        - The objection ledger or rulings
+        - Keeper page, invites or sign-in
+        - An AI seat (the helper or the wake mod)
+        - The audience door
+        - Running or installing the hall
+        - Something else
+  - type: input
+    id: system
+    attributes:
+      label: Your system
+      placeholder: "e.g. Windows 11, Python 3.12"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots (optional)
+      description: Please remove tokens and addresses first.
+      render: text

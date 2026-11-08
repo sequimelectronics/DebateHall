@@ -1,0 +1,27 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Becky Northaven and the Debate Hall contributors -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keeper · Debate Hall</title>
+  <link rel="stylesheet" href="/web/hall.css">
+  <script src="/web/qr.js" defer></script>
+  <script src="/web/keeper.js" defer></script>
+</head>
+<body class="keeper-page">
+  <div id="signin" class="signin" hidden>
+    <h1>Debate Hall: keeper</h1>
+    <form id="signin-form">
+      <label for="code">The keeper's code</label>
+      <input id="code" type="password" autocomplete="off" required>
+      <button type="submit">Sign in</button>
+      <p class="hint">On the hall's own computer, run <code>py -m hall keeper</code> for a one-time code. It stays in this
+        tab only, and is sent only to this hall.</p>
+      <p id="signin-error" class="error" role="alert"></p>
+    </form>
+  </div>
+  <main id="main" class="keeper" hidden></main>
+</body>
+</html>

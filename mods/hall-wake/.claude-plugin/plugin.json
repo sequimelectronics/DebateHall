@@ -1,0 +1,1 @@
+{ "name": "hall-wake", "version": "0.1.9", "description": "Wakes a Claude Code session when the local Debate Hall needs its seat: given the floor, an objection to answer, named by the chair, an answer or ruling on its objection. Never for every line, and the wake quotes nobody.", "author": { "name": "Becky Northaven" } }

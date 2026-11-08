@@ -1,0 +1,159 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Becky Northaven and the Debate Hall contributors -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Debate Hall</title>
+  <link rel="stylesheet" href="/web/hall.css">
+  <script src="/web/hall.js" defer></script>
+</head>
+<body>
+  <div id="signin" class="signin" hidden>
+    <h1>Debate Hall</h1>
+    <form id="signin-form">
+      <label for="token">Your claim code or seat token</label>
+      <input id="token" type="password" autocomplete="off" required>
+      <button type="submit">Take my seat</button>
+      <p class="hint">A claim code (like 3F9A-07C2-B1E4-5D6A) works once and becomes your seat. Or paste the token
+        from your seat's file. It stays in this tab only, and is sent only to this hall.</p>
+      <p id="signin-error" class="error" role="alert"></p>
+    </form>
+  </div>
+
+  <div id="app" hidden>
+    <header class="bar">
+      <h1 id="title">Debate Hall</h1>
+      <span id="phase" class="pill"></span>
+      <span id="floor" class="floor" aria-live="polite"></span>
+      <span id="queue" class="queue"></span>
+      <span id="me" class="me"></span>
+      <button id="toggle-side" type="button" aria-controls="side" aria-expanded="true">Hide the ledger panel</button>
+      <span class="text-size" role="group" aria-label="Text size">
+        <button id="smaller" type="button" title="Smaller text" aria-label="Smaller text">A−</button>
+        <button id="bigger" type="button" title="Bigger text" aria-label="Bigger text">A+</button>
+      </span>
+      <button id="signout" type="button" class="quiet">Leave</button>
+    </header>
+
+    <div id="waiting" class="waiting" role="status" hidden></div>
+    <main class="cols">
+      <!-- The Chair and the ledger in their own panel, so the Hall's log keeps its full height (the keeper, 10-25). -->
+      <section id="side" class="side" aria-label="Chair and objection ledger">
+        <details id="chair" class="panel" hidden>
+          <summary>Chair</summary>
+          <div class="row">
+            <label for="give-who">Give the floor to</label>
+            <select id="give-who"></select>
+            <label for="give-min">minutes</label>
+            <input id="give-min" type="number" min="1" max="120" placeholder="no limit">
+            <button id="give" type="button">Give</button>
+            <button id="take" type="button">Take it back</button>
+          </div>
+          <div class="row">
+            <label for="phase-pick">Phase</label>
+            <select id="phase-pick">
+              <option>setup</option><option>openings</option><option>objections</option><option>rebuttals</option>
+              <option>rulings</option><option>closings</option><option>done</option>
+            </select>
+            <button id="set-phase" type="button">Open phase</button>
+          </div>
+          <div class="row">
+            <label for="paper-path">Paper (in debate_docs/)</label>
+            <input id="paper-path" type="text" placeholder="paper.md">
+            <button id="set-paper" type="button">Set paper</button>
+          </div>
+          <div class="row" id="pace-row" hidden>
+            <label><input id="paced" type="checkbox"> The judge paces the debate (it waits for my Continue after each turn)</label>
+            <label><input id="chime" type="checkbox"> A soft chime when it starts waiting on me</label>
+          </div>
+          <div class="row" id="role-row" hidden>
+            <label for="role-who">Change a seat's role</label>
+            <select id="role-who"></select>
+            <select id="role-new" aria-label="New role">
+              <option>clerk</option><option>moderator</option><option>advocate</option><option>adversary</option>
+              <option value="reader_a">reader (Team A)</option><option value="reader_b">reader (Team B)</option>
+              <option>witness</option><option>aide</option><option>audience</option>
+            </select>
+            <button id="set-role" type="button">Change</button>
+          </div>
+          <div class="row" id="huddle-row" hidden>
+            <label for="huddle-min">Huddle time</label>
+            <input id="huddle-min" type="number" min="1" max="60" value="10" class="link-num"> min
+            <button id="huddle-call" type="button">Grant huddle time</button>
+            <button id="huddle-end" type="button" class="quiet">End the huddle</button>
+            <span class="hint">The Hall waits while both teams confer in their huddles.</span>
+          </div>
+          <div class="row" id="draft-all-row" hidden>
+            <button id="draft-all" type="button" class="quiet">Clerk, draft every open one now</button>
+          </div>
+          <div class="row" id="close-row" hidden>
+            <button id="close" type="button" class="danger">Close the debate</button>
+            <span class="hint">Ends speaking; everyone can then read the huddles (posting stays closed).</span>
+          </div>
+          <span id="chair-error" class="error" role="alert"></span>
+        </details>
+
+        <details id="ledger-panel" class="panel" open>
+          <summary>Objection ledger <span id="ledger-count"></span></summary>
+          <form id="object" class="object" hidden>
+            <div class="row"><label for="ob-anchor">Passage</label><input id="ob-anchor" placeholder="4.2" required></div>
+            <div class="row"><label for="ob-quote">Quote (optional)</label><input id="ob-quote"></div>
+            <div class="row"><label for="ob-claim">Claim attacked</label><input id="ob-claim" required></div>
+            <div class="row"><label for="ob-why">Why</label><textarea id="ob-why" rows="2" required></textarea></div>
+            <div class="row"><label for="ob-deps">Depends on (optional)</label><input id="ob-deps" placeholder="5, 3"></div>
+            <button type="submit">File objection</button>
+            <span id="ob-error" class="error" role="alert"></span>
+          </form>
+          <ol id="ledger" class="ledger"></ol>
+          <div class="row">
+            <button id="export-ledger" type="button" class="quiet">Download ledger (.md)</button>
+            <button id="export-log" type="button" class="quiet">Download transcript (.md)</button>
+          </div>
+        </details>
+      </section>
+
+      <div id="divider-side" class="divider" role="separator" tabindex="0" aria-orientation="vertical"
+           aria-label="Resize the ledger panel (arrow keys)" aria-valuemin="15" aria-valuemax="50" aria-valuenow="26"></div>
+
+      <section class="left" aria-label="Debate">
+        <nav id="tabs" class="tabs" role="tablist"></nav>
+        <ol id="log" class="log" aria-live="polite" aria-relevant="additions"></ol>
+        <form id="say" class="say">
+          <p id="audience-note" class="audience-note" aria-live="polite"></p>
+          <label for="text" class="sr">Say something in this room</label>
+          <textarea id="text" rows="3" maxlength="8000" placeholder="Speak…"></textarea>
+          <div class="row">
+            <button type="submit">Send</button>
+            <button id="req" type="button">Ask for the floor</button>
+            <button id="withdraw" type="button" hidden>Withdraw my ask</button>
+            <button id="yield" type="button">Yield the floor</button>
+            <button id="nudge" type="button" hidden>Moderator, please continue</button>
+            <span id="next-step" class="hint next-step" hidden></span>
+            <span id="say-error" class="error" role="alert"></span>
+          </div>
+        </form>
+      </section>
+
+      <div id="divider" class="divider" role="separator" tabindex="0" aria-orientation="vertical"
+           aria-label="Resize the paper (arrow keys)" aria-valuemin="20" aria-valuemax="60" aria-valuenow="36"></div>
+
+      <section class="right" aria-label="The paper">
+        <div class="row viewer-bar">
+          <label for="find" class="sr">Search the paper</label>
+          <input id="find" type="search" placeholder="Search the paper (Enter for next)">
+          <span id="find-count" class="hint"></span>
+          <label><input id="follow" type="checkbox" checked> Follow the speaker</label>
+          <button id="pop-out" type="button" title="Move the paper to its own window (e.g. a second monitor)">Open in its own window</button>
+          <span id="paper-ver" class="hint"></span>
+        </div>
+        <nav id="toc" class="toc" aria-label="Sections"></nav>
+        <article id="paper" class="paper"><p class="hint">No paper yet. The chair sets one from debate_docs/.</p></article>
+      </section>
+      <p id="popped-note" class="popped-note" hidden>The paper is open in its own window.
+        <button id="pop-back" type="button">Bring it back here</button></p>
+    </main>
+  </div>
+</body>
+</html>

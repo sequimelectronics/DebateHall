@@ -1,0 +1,6 @@
+# Runtime
+fastapi>=0.110
+uvicorn>=0.29
+markdown-it-py>=3.0
+# Tests (fastapi.testclient)
+httpx>=0.27

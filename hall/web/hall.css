@@ -1,0 +1,176 @@
+/* SPDX-License-Identifier: AGPL-3.0-only */
+/* Copyright (C) 2026 Becky Northaven and the Debate Hall contributors */
+/* A well-worn, well-loved debating hall (the keeper, 10-25): aged parchment, near-black ink, a walnut-panelled header
+   with a brass rule, an oxblood accent, brass for the moderator's room; still high contrast for easy reading
+   (ink on parchment ~16:1; every room color >= 7:1 on the panel). Dark: walnut and candlelight. */
+:root {
+  --bg: #ece2cc; --panel: #fbf6ea; --ink: #1b150e; --soft: #54493a; --line: #c4b08f;
+  --accent: #6b1f1f; --hall: #1f3a5f; --gallery: #4d4d4d; --team-a: #2a5530; --team-b: #873f12;
+  --hl: #f2d77e; --danger: #8e1c1c; --aide: #5a2a6e; --chair: #7a5a08;
+  --wood: #2e2016; --wood-2: #3d2b1d; --brass: #b08a3e; --on-wood: #f4ead4;
+  --serif: Georgia, "Book Antiqua", Palatino, "Palatino Linotype", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15100b; --panel: #211912; --ink: #f2e8d4; --soft: #c4b59b; --line: #4a3a2a;
+    --accent: #e09a86; --hall: #9cbde6; --gallery: #b4b4b4; --team-a: #94cf9f; --team-b: #eaa877;
+    --hl: #5e4b14; --danger: #ee8a8a; --aide: #d7b0ea; --chair: #e6c35c;
+    --wood: #0f0b07; --wood-2: #1d150e; --brass: #c9a24f; --on-wood: #f2e8d4;
+  }
+}
+* { box-sizing: border-box; }
+/* Text size (A- / A+), remembered in this browser: everything is sized in em from here (the keeper, 10-25). */
+body { margin: 0; background: var(--bg); color: var(--ink); font: calc(15px * var(--scale, 1))/1.45 system-ui, sans-serif; }
+button { font: inherit; padding: .3em .8em; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.quiet { border-color: transparent; color: var(--soft); }
+button.danger { color: var(--danger); border-color: var(--danger); }
+input, select, textarea { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: .3em .5em; }
+textarea { width: 100%; resize: vertical; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.hint { color: var(--soft); font-size: .9em; }
+.error { color: var(--danger); }
+.row { display: flex; flex-wrap: wrap; gap: .5em; align-items: center; margin: .4em 0; }
+
+.signin { max-width: 28em; margin: 15vh auto; padding: 1.5em; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+.signin form { display: grid; gap: .6em; }
+
+.bar { display: flex; flex-wrap: wrap; gap: .8em; align-items: center; padding: .65em 1em;
+       background: linear-gradient(180deg, var(--wood-2), var(--wood)); color: var(--on-wood);
+       border-bottom: 3px solid var(--brass); }
+.bar h1 { font: 700 1.25em/1.2 var(--serif); margin: 0; letter-spacing: .02em; }
+.bar h1::before { content: "❧ "; color: var(--brass); }
+.bar .pill { padding: .1em .7em; border-radius: 99px; border: 1px solid var(--brass); color: var(--on-wood); }
+.bar .floor { font-weight: 700; }
+.bar .queue, .bar .me { color: var(--on-wood); opacity: .9; }
+.bar button { background: transparent; color: var(--on-wood); border-color: var(--brass); }
+.bar button:hover { background: color-mix(in srgb, var(--brass) 25%, transparent); }
+.signin h1, .tabs button, .panel summary { font-family: var(--serif); }
+.signin { border-top: 4px solid var(--brass); }
+.paper { font-family: var(--serif); font-size: 1.05em; line-height: 1.6; }
+.paper h1, .paper h2, .paper h3 { color: var(--accent); }
+.me { margin-left: auto; }
+
+/* The debate and the paper side by side, with a divider you drag (or move with the arrow keys) to give either
+   more room; the paper can also move to its own window, and then the debate takes the whole width. */
+/* Three columns: the Chair and the ledger | the Hall | the paper. The Hall takes what's left; the side panel and
+   the paper each have a divider, and either can go (the paper to its own window, the panel with its header
+   button), so the Hall can have the whole width for large text (the keeper, 10-25). */
+.cols { display: flex; gap: 0; padding: 1em; height: calc(100vh - 3.4em); }
+.cols > .side { flex: 0 0 var(--side, 26%); min-width: 0; overflow-y: auto; }
+.cols > .left { flex: 1 1 0; min-width: 0; }
+.cols > .right { flex: 0 0 var(--paperw, 36%); min-width: 0; }
+.cols.side-hidden > .side, .cols.side-hidden > #divider-side { display: none; }
+.side { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: .6em;
+        box-shadow: 0 1px 0 var(--brass), 0 2px 8px rgba(46, 32, 22, .12); }
+.side .panel:first-child { margin-top: 0; border-top: 0; padding-top: 0; }
+.side .ledger { max-height: none; }
+.divider { flex: 0 0 14px; cursor: col-resize; display: flex; align-items: center; justify-content: center; }
+.divider::before { content: ""; width: 4px; height: 3em; border-radius: 2px; background: var(--line); }
+.divider:hover::before, .divider:focus-visible::before { background: var(--accent); }
+.divider:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 4px; }
+.cols.popped > .left { flex: 1 1 auto; }
+.cols.popped > .right, .cols.popped > .divider { display: none; }
+.popped-note { margin: 0 0 0 1em; align-self: flex-start; color: var(--soft); }
+.text-size button { min-width: 2.4em; }
+.paper-window .right.solo { height: 100vh; border-radius: 0; border: 0; }
+@media (max-width: 900px) {
+  .cols { flex-direction: column; height: auto; }
+  .cols > .left, .cols > .side, .cols > .right { flex: none; }
+  .cols > .left { order: -1; min-height: 70vh; }      /* the Hall first on a narrow screen */
+  .divider { display: none; }
+}
+.left, .right { display: flex; flex-direction: column; min-height: 0; background: var(--panel); border: 1px solid var(--line);
+                border-radius: 8px; padding: .6em; box-shadow: 0 1px 0 var(--brass), 0 2px 8px rgba(46, 32, 22, .12); }
+
+.tabs { display: flex; gap: .3em; border-bottom: 1px solid var(--line); padding-bottom: .4em; }
+.tabs button[aria-selected="true"] { border-color: var(--accent); font-weight: 600; }
+.tabs .unread::after { content: " •"; color: var(--accent); }
+
+.log { list-style: none; margin: .4em 0; padding: 0; overflow-y: auto; flex: 1; min-height: 10em; }
+.log li { padding: .3em .4em; border-left: 3px solid transparent; }
+.log li .who { font-weight: 600; margin-right: .4em; }
+.log li .role { color: var(--soft); font-size: .85em; margin-right: .4em; }
+.log li .when { color: var(--soft); font-size: .8em; float: right; }
+.log li.notice { color: var(--soft); font-style: italic; }
+.log li.objection, .log li.ruling, .log li.draft, .log li.answer, .log li.concede { border-left-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.log li.show { color: var(--soft); }
+.log li .body { white-space: pre-wrap; }
+
+.say .row { justify-content: flex-start; }
+.waiting { margin: .6em 1em 0; padding: .6em 1em; border-radius: 10px; font-weight: 700;
+           background: color-mix(in srgb, var(--hl) 70%, var(--panel)); border: 2px solid var(--accent); }
+.waiting button { margin-left: .8em; font-weight: 700; }
+.next-step { font-weight: 400; }
+.waiting .next-step { margin-top: .3em; color: var(--soft); }
+#nudge.urgent { border-color: var(--accent); border-width: 2px; font-weight: 700; }
+
+/* Each room looks different where you type, so nobody writes to the Hall thinking it's a private room (the keeper,
+   10-25: "a legitimate risk I will think I'm typing to my aide when I'm in the hall or vice versa"). */
+.left[data-room="hall"]    { --room: var(--hall); }
+.left[data-room="gallery"] { --room: var(--gallery); }
+.left[data-room="team_a"]  { --room: var(--team-a); }
+.left[data-room="team_b"]  { --room: var(--team-b); }
+.left[data-room="aide"]    { --room: var(--aide); }
+.left[data-room="chair"]   { --room: var(--chair); }
+.tabs .alert { border: 3px solid var(--chair); background: color-mix(in srgb, var(--chair) 25%, var(--panel));
+               font-weight: 700; animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--chair) 45%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .tabs .alert { animation: none; } }
+.left { border-top: 6px solid var(--room, var(--line)); }
+.say { border: 3px solid var(--room, var(--line)); border-radius: 10px; padding: .5em;
+       background: color-mix(in srgb, var(--room, transparent) 8%, transparent); }
+.say textarea { border-color: var(--room, var(--line)); }
+.audience-note { margin: 0 0 .4em; font-weight: 700; color: var(--room, var(--ink)); }
+.tabs button[aria-selected="true"] { border-color: var(--room, var(--accent)); background: color-mix(in srgb, var(--room, transparent) 14%, var(--panel)); }
+.panel { margin-top: .5em; border-top: 1px solid var(--line); padding-top: .4em; }
+.panel summary { cursor: pointer; font-weight: 600; }
+.object { border: 1px dashed var(--line); padding: .5em; border-radius: 8px; }
+.object .row label { min-width: 8em; }
+.object input, .object textarea { flex: 1; }
+.ledger { list-style: none; padding: 0; margin: .4em 0; max-height: 40vh; overflow-y: auto; }
+.ledger > li { border: 1px solid var(--line); border-radius: 8px; padding: .4em .6em; margin: .4em 0; }
+.ledger .stale { margin-left: .4em; padding: 0 .5em; border-radius: 99px; font-size: .85em; border: 1px dashed var(--danger); color: var(--danger); }
+.ledger summary.ob-head { position: sticky; top: 0; z-index: 1; background: var(--panel); cursor: pointer; padding: .15em 0; }
+.ledger .anchor-link { font-weight: 700; color: var(--accent); text-decoration: underline; border: 0; padding: 0;
+                       background: none; cursor: pointer; }
+.ledger .status { padding: 0 .5em; border-radius: 99px; border: 1px solid var(--line); font-size: .85em; }
+.ledger .status.revise, .ledger .status.sustained { border-color: var(--danger); color: var(--danger); }
+.ledger .ready { margin-left: .4em; padding: 0 .5em; border-radius: 99px; font-size: .85em; font-weight: 700;
+                 border: 2px solid var(--chair); color: var(--chair); }
+.ledger .links { font-size: .9em; color: var(--soft); }
+.ledger .link-to { border: 0; padding: 0 .1em; background: none; color: var(--accent); text-decoration: underline;
+                   font-weight: 700; cursor: pointer; }
+.ledger .link-num { width: 4.5em; }
+.ledger .link-row { margin: .2em 0 0; }
+.ledger li.flash { outline: 3px solid var(--chair); outline-offset: 2px; }
+.ledger .events { margin: .3em 0 0 1em; padding: 0; color: var(--soft); }
+.ledger .act { display: flex; gap: .4em; flex-wrap: wrap; margin-top: .3em; }
+.ledger .act input { flex: 1; min-width: 12em; }
+
+.viewer-bar input[type="search"] { flex: 1; }
+.toc { font-size: .9em; max-height: 8em; overflow-y: auto; border-bottom: 1px solid var(--line); padding-bottom: .3em; }
+.toc a { display: block; color: var(--accent); text-decoration: none; }
+.toc a.l3 { padding-left: 1em; } .toc a.l4 { padding-left: 2em; }
+.paper { overflow-y: auto; flex: 1; padding: 0 .4em; }
+.paper table { border-collapse: collapse; } .paper td, .paper th { border: 1px solid var(--line); padding: .2em .5em; }
+.paper .hl { background: var(--hl); outline: 2px solid var(--hl); }
+.paper .found { background: color-mix(in srgb, var(--hl) 55%, transparent); }
+
+/* The keeper's page (11-07, made like AI-Beach's). */
+.keeper { max-width: 60em; margin: 0 auto; padding: 1em 16px 3em; }
+.keeper-bar { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6em 1em; }
+.keeper .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 1em; margin: 1em 0; }
+.keeper h2 { color: var(--accent); margin-top: 0; }
+.keeper .row { display: flex; flex-wrap: wrap; gap: .5em; align-items: center; }
+.keeper .roles { border: 1px solid var(--line); border-radius: 8px; display: flex; flex-wrap: wrap; gap: .3em 1.2em; }
+.keeper .pick { display: inline-flex; align-items: center; gap: .3em; cursor: pointer; }
+.keeper table { border-collapse: collapse; width: 100%; }
+.keeper th, .keeper td { text-align: left; padding: .35em .4em; border-bottom: 1px solid var(--line); vertical-align: top; }
+.keeper tr.revoked td { color: var(--soft); text-decoration: line-through; }
+.keeper .table-wrap { overflow-x: auto; }
+.keeper .devices { margin: 0; padding-left: 1.1em; }
+.keeper .invite { border: 2px solid var(--accent); border-radius: 8px; padding: .8em; margin-top: .8em; }
+.keeper .invite code { word-break: break-all; }
+.keeper .qr canvas { display: block; margin: .5em 0; max-width: 100%; height: auto; }
+.keeper .new-bits[hidden] { display: none; }
