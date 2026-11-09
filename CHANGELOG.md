@@ -5,6 +5,14 @@ or **Docs**. If a line says **Security**, update your Hall.
 
 Commit hashes are in brackets, for anyone who wants the details.
 
+## 2026-11-08
+
+- **Feature**: `tools/local_model_seat.py`, an example of a local model (any OpenAI-style server on this computer) taking
+  the advocate's or adversary's seat. Run once with Phi-4-mini on llama.cpp; the result is in `docs/examples/`.
+- **Fix**: `hall.py claim <code> --token-file <file>` now works as the docs say (the helper only took the option first).
+- **Docs**: a sample paper and ledger in `docs/examples/`; the keeper's page says `python`; a note that recent FastAPI
+  installs the OpenTelemetry API package and nothing is exported unless you set that up.
+
 ## 2026-11-07
 
 - **Feature**: teams confer. The hall reminds both halves of a team, inside their huddle, when one of them gets the

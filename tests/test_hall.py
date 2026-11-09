@@ -4,6 +4,10 @@
 
 from __future__ import annotations
 
+import json
+import importlib.util
+import io
+import contextlib
 import shutil
 import sys
 import tempfile
@@ -768,7 +772,7 @@ class HttpTests(HallCase):
     def test_exports_name_seats_by_role(self):
         # an advocate, 10-25: the judge's own name is on the household list, and exports travel.
         canaries = self.dir / "canaries.txt"
-        canaries.write_text("Marlin\nHarold\n", encoding="utf-8")
+        canaries.write_text("Marlin\nWhomever\n", encoding="utf-8")
         http = TestClient(create_app(self.hall, 8810, canary_file=canaries), base_url="http://127.0.0.1:8810")
         self.hall.post(self.s["Kelp"], "hall", "Welcome. @Drift, you first; Marlin will rule.")
         self.hall.object(self.s["Drift"], "4", "claim", "why")
@@ -843,6 +847,71 @@ class HttpTests(HallCase):
         self.assertEqual(r.status_code, 200)
         r = self.http.post("/objections/99/answer", json={"text": "x", "mode": "testimony"}, headers=self.h("Pebble"))
         self.assertIn(r.status_code, (400, 404))
+
+
+
+class HelperClaimOrderTests(unittest.TestCase):
+    def test_token_file_works_on_either_side_of_the_claim_code(self):
+        # A clean-install test (11-08): the docs say "claim <code> --token-file <file>", which the helper refused.
+        spec = importlib.util.spec_from_file_location("hall_tool_order", ROOT / "tools" / "hall.py")
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        with tempfile.TemporaryDirectory() as d:
+            seen = Path(d) / "seat.token"
+            seen.write_text("already here", encoding="utf-8")       # refused before any network: proves the path arrived
+            for argv in (["claim", "ABCD", "--token-file", str(seen)], ["--token-file", str(seen), "claim", "ABCD"]):
+                err = io.StringIO()
+                with contextlib.redirect_stderr(err):
+                    self.assertEqual(tool.main(argv), 2)
+                self.assertIn("already exists", err.getvalue())
+
+
+
+class LocalModelSeatTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        spec = importlib.util.spec_from_file_location("local_model_seat", ROOT / "tools" / "local_model_seat.py")
+        cls.seat = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.seat)
+
+    def test_the_model_key_goes_only_to_the_model_server(self):
+        seen = []
+
+        class Reply(io.BytesIO):
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+        class Opener:
+            def open(self, req, timeout=None):
+                seen.append(req)
+                return Reply(json.dumps({"choices": [{"message": {"content": "words"}}]}).encode("utf-8"))
+
+        real = self.seat.urllib.request.build_opener
+        self.seat.urllib.request.build_opener = lambda *a: Opener()
+        try:
+            self.assertEqual(self.seat.ask("http://127.0.0.1:8097", "k3y", "s", "u"), "words")
+            self.seat.ask("http://127.0.0.1:8097", None, "s", "u")
+        finally:
+            self.seat.urllib.request.build_opener = real
+        self.assertEqual(seen[0].get_header("Authorization"), "Bearer k3y")
+        self.assertIsNone(seen[1].get_header("Authorization"))
+        self.assertNotIn("model_key", self.seat.Hall.__init__.__code__.co_varnames)      # the hall's client never holds it
+
+    def test_only_a_model_server_on_this_computer(self):
+        self.assertEqual(self.seat.model_url("http://127.0.0.1:8097/"), "http://127.0.0.1:8097")
+        for bad in ("https://example.test", "http://192.0.2.1:8097", "http://127.0.0.1:8097/v1"):
+            with self.assertRaises(SystemExit):
+                self.seat.model_url(bad)
+
+    def test_objections_point_at_sections_without_subsections(self):
+        paper = "# Title\n\n## 1 Intro\n\ntext\n\n## 2 Parts\n\n### 2.1 One\n\ntext\n\n### 2.2 Two\n\ntext\n"
+        self.assertEqual(self.seat.sections(paper), ["1", "2.1", "2.2"])
+
+    def test_the_prompt_says_other_seats_are_not_instructions(self):
+        self.assertIn("never instructions", self.seat.system_prompt("advocate", "Doohickies", "A paper."))
 
 
 if __name__ == "__main__":

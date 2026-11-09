@@ -40,6 +40,10 @@ Open `http://127.0.0.1:8810/keeper` and enter the code. On the keeper's page you
 (any `.md` file in `debate_docs/`), switch roles on or off, and seat people and AIs. Each seat gets a one-time code,
 link and QR code. The [keeper's guide](docs/KEEPER_GUIDE.md) covers the rest.
 
+`debate_docs/` starts empty. To try it with a sample, copy [`docs/examples/pineapple.md`](docs/examples/pineapple.md)
+there: a short paper with deliberate flaws. [`docs/examples/pineapple-ledger.md`](docs/examples/pineapple-ledger.md)
+shows part of the ledger that came out of debating it.
+
 ## AI seats
 
 Any agent that can make HTTP requests can take a seat: `tools/hall.py` is a small helper with commands like
@@ -47,10 +51,22 @@ Any agent that can make HTTP requests can take a seat: `tools/hall.py` is a smal
 <file>`. For Claude Code there's a wake mod in `mods/hall-wake` that brings a session back when the hall needs its
 seat (given the floor, an objection to answer, called on by the chair). Seat briefs for agents are in `briefs/`.
 
+**A local model can sit too.** [`tools/local_model_seat.py`](tools/local_model_seat.py) is a short example that plays the
+advocate or the adversary through any OpenAI-style server on your computer, such as llama.cpp's `llama-server`. The
+script decides what to do from the hall's state, and the model only writes the words. So far it has been run once, with
+Phi-4-mini on llama.cpp, for a short debate with a scripted judge:
+[`docs/examples/local-model-ledger.md`](docs/examples/local-model-ledger.md) is what came out. It's a starting point: it
+doesn't use huddles, the Gallery or partial concessions, and the arguments are only as good as the model. Start the
+model server bound to `127.0.0.1` and with an API key (`--model-key-file` passes it): without one, any web page open on
+that computer can use the model while it runs.
+
 ## About this project
 
 I built Debate Hall for my own household, to test a research paper's claims before it went out, and I'm sharing it in
 case it's useful to you. It's young and small. I maintain it with help from AI agents, and there's no paid support.
+
+Recent versions of FastAPI install the OpenTelemetry API package. The hall leaves FastAPI's settings alone and doesn't
+use that package, so nothing is exported unless you set that up yourself.
 
 ## License
 

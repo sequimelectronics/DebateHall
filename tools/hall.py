@@ -265,6 +265,9 @@ def main(argv: list[str] | None = None) -> int:
     cm = sub.add_parser("claim", help="swap a one-time claim code from the keeper for your seat's token, saved in "
                                       "--token-file (never shown)")
     cm.add_argument("code")
+    # The README, the guide and the keeper's page all write it after the code; a clean-install test (11-08) found the
+    # helper only took it before. Both orders work now.
+    cm.add_argument("--token-file", dest="token_file", default=argparse.SUPPRESS, help=argparse.SUPPRESS)
     v = sub.add_parser("verify")
     v.add_argument("path")
     v.add_argument("sha")

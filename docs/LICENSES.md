@@ -13,6 +13,7 @@ The art in `docs/art/` (the repository picture and its SVG source) is **CC BY-SA
 | fastapi | MIT | the web server's routes |
 | starlette (with fastapi) | BSD-3-Clause | |
 | pydantic (with fastapi) | MIT | |
+| opentelemetry-api (with recent fastapi) | Apache-2.0 | not used by the hall |
 | uvicorn | BSD-3-Clause | serving the hall |
 | markdown-it-py | MIT | turning the paper into HTML, with raw HTML switched off |
 | mdurl (with markdown-it-py) | MIT | |
